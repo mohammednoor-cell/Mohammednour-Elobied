@@ -1,0 +1,73 @@
+{
+  "entities": {
+    "Project": {
+      "title": "Project",
+      "description": "A client or internal project with deliverables, status, priority, and dates",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 200 },
+        "client": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "enum": ["Experiential", "Brand & Design", "VIP & Protocol", "Interactive Tech", "Strategy"] },
+        "status": { "type": "string", "enum": ["Planning", "In Progress", "Review", "Completed", "On Hold"] },
+        "priority": { "type": "string", "enum": ["High", "Medium", "Low"] },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "budget": { "type": "string", "maxLength": 100 },
+        "notes": { "type": "string", "maxLength": 5000 },
+        "lead": { "type": "string", "maxLength": 100 },
+        "archived": { "type": "boolean" },
+        "archivedAt": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "ownerId": { "type": "string" }
+      },
+      "required": ["id", "name", "client", "status", "priority", "ownerId"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated user profile and workspace preferences",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string", "maxLength": 150 },
+        "email": { "type": "string", "maxLength": 200 },
+        "photoURL": { "type": "string", "maxLength": 1000 },
+        "role": { "type": "string", "enum": ["lead", "member", "admin"] },
+        "language": { "type": "string", "enum": ["en", "ar"] },
+        "theme": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "QuickNote": {
+      "title": "QuickNote",
+      "description": "Executive quick scratchpad notes",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "content": { "type": "string", "maxLength": 5000 },
+        "color": { "type": "string", "maxLength": 50 },
+        "pinned": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "ownerId": { "type": "string" }
+      },
+      "required": ["id", "title", "ownerId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/projects/{projectId}": {
+      "schema": { "$ref": "#/entities/Project" },
+      "description": "User specific projects, deliverables, and status"
+    },
+    "/users/{userId}/profile/{profileId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User profile and personal preferences"
+    },
+    "/users/{userId}/notes/{noteId}": {
+      "schema": { "$ref": "#/entities/QuickNote" },
+      "description": "User scratchpad notes"
+    }
+  }
+}
